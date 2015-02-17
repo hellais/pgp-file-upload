@@ -15,11 +15,40 @@ module.exports = function (grunt) {
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
 
+  var fs = require('fs'),
+      path = require('path'),
+      os = require('os'),
+      busboy = require('connect-busboy');
+
   // Configurable paths for the application
   var appConfig = {
     app: require('./bower.json').appPath || 'app',
-    dist: 'dist'
+    dist: 'dist',
+    uploadDir: 'uploads/',
+    uploadHandler: function(req, res, next) {
+      //console.log("URL:" + req.url);
+      //console.log("Headers: " + req.headers);
+      //console.log("Method: " + req.method);
+      //console.log(req.busboy);
+      if (req.method == "GET") {
+        res.statusCode = 204;
+        res.end();
+      } else if (req.busboy) {
+        req.busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
+          file.on('end', function() {
+            res.writeHead(200, { 'Connection': 'close' })
+            res.end("Got your message in a bottle!"); 
+          });
+          var saveTo = path.join(appConfig.uploadDir, path.basename(filename));
+          file.pipe(fs.createWriteStream(saveTo));
+        });
+        return req.pipe(req.busboy);
+      } else {
+        return next();
+      }
+    }
   };
+
 
   // Define the configuration for all the tasks
   grunt.initConfig({
@@ -73,7 +102,7 @@ module.exports = function (grunt) {
       },
       livereload: {
         options: {
-          open: true,
+          //open: true,
           middleware: function (connect) {
             return [
               connect.static('.tmp'),
@@ -85,6 +114,8 @@ module.exports = function (grunt) {
                 '/app/styles',
                 connect.static('./app/styles')
               ),
+              connect().use('/upload', busboy()),
+              connect().use('/upload', appConfig.uploadHandler),
               connect.static(appConfig.app)
             ];
           }
@@ -97,6 +128,7 @@ module.exports = function (grunt) {
             return [
               connect.static('.tmp'),
               connect.static('test'),
+              connect().use('/upload', busboy()),
               connect().use(
                 '/bower_components',
                 connect.static('./bower_components')

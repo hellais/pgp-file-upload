@@ -1,7 +1,6 @@
 {
   "name": "pgpfileupload",
   "version": "0.0.0",
-  "dependencies": {},
   "repository": {},
   "devDependencies": {
     "grunt": "~0.4.5",
@@ -31,7 +30,8 @@
     "karma": "~0.12.31",
     "karma-jasmine": "~0.3.5",
     "grunt-karma": "~0.10.1",
-    "karma-phantomjs-launcher": "~0.1.4"
+    "karma-phantomjs-launcher": "~0.1.4",
+    "connect-busboy": "0.0.2"
   },
   "engines": {
     "node": ">=0.10.0"

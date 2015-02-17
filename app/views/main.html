@@ -1,23 +1,19 @@
 <div class="jumbotron">
-  <h1>'Allo, 'Allo!</h1>
+  <h1>G'day mate!</h1>
   <p class="lead">
-    <img src="images/yeoman.png" alt="I'm Yeoman"><br>
-    Always a pleasure scaffolding your apps.
+    Bringing you fresh crypto to your browser.
   </p>
-  <p><a class="btn btn-lg btn-success" ng-href="#/">Splendid!<span class="glyphicon glyphicon-ok"></span></a></p>
 </div>
 
-<div class="row marketing">
+<div class="row">
+
   <h4>HTML5 Boilerplate</h4>
-  <p>
-    HTML5 Boilerplate is a professional front-end template for building fast, robust, and adaptable web apps or sites.
-  </p>
+  <div flow-init="{target: '/upload'}"
+       flow-files-submitted="$flow.upload()"
+       flow-files-succcess="$file.msg = $message">
+    <input type="file" flow-btn />
+    <span class="btn" flow-btn>Upload File</span>
 
-  <h4>Angular</h4>
-  <p>
-    AngularJS is a toolset for building the framework most suited to your application development.
-  </p>
+  </div>
 
-  <h4>Karma</h4>
-  <p>Spectacular Test Runner for JavaScript.</p>
 </div>
