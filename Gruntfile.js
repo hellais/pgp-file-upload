@@ -64,7 +64,7 @@ module.exports = function (grunt) {
       },
       js: {
         files: ['<%= yeoman.app %>/scripts/{,*/}*.js'],
-        tasks: ['newer:jshint:all'],
+        tasks: ['newer:jshint:all', 'browserify'],
         options: {
           livereload: '<%= connect.options.livereload %>'
         }
@@ -236,6 +236,13 @@ module.exports = function (grunt) {
               }
             }
           }
+      }
+    },
+
+    browserify: {
+      client: {
+        src: ["app/scripts/controllers/main.js"],
+        dest: "app/scripts/controllers/main-browserified.js"
       }
     },
 
@@ -438,6 +445,7 @@ module.exports = function (grunt) {
     grunt.task.run([
       'clean:server',
       'wiredep',
+      'browserify',
       'concurrent:server',
       'autoprefixer:server',
       'connect:livereload',
