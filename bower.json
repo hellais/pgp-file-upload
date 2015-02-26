@@ -11,7 +11,8 @@
     "angular-sanitize": "^1.3.0",
     "angular-touch": "^1.3.0",
     "ng-flow": "~2.6.0",
-    "openpgp": "https://github.com/hellais/openpgpjs/archive/feature/streamedEncryption_fixes.zip"
+    "openpgp": "https://github.com/hellais/openpgpjs/archive/feature/streamedEncryption_fixes.zip",
+    "flow.js": "git://github.com/hellais/flow.js.git#feature/readHook"
   },
   "devDependencies": {
     "angular-mocks": "^1.3.0"
