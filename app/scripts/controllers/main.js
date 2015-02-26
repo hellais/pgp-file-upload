@@ -79,11 +79,11 @@ angular.module('pgpFileUploadApp')
           var data = new Blob(nodeBufferToUint8Array(this.buffer.slice(0, neededBytes)));
           // Investigate if this de-allocates the bytes automatically or not
           this.buffer = this.buffer.slice(neededBytes);
-          self.readFinished(data);
+          self.chunk.readFinished(data);
         }
       });
       this.message_stream.on('end', function(data) {
-          self.readFinished(new Blob(nodeBufferToUint8Array(this.buffer)));
+          self.chunk.readFinished(new Blob(nodeBufferToUint8Array(this.buffer)));
       });
       
       reader.onload = function(e) {
