@@ -45,14 +45,6 @@ angular.module('pgpFileUploadApp')
     
     console.log(pub_key);
 
-    function nodeBufferToUint8Array(buffer) {
-      var array = new Uint8Array(ab);
-      for (var i = 0; i < buffer.length; ++i) {
-          array[i] = buffer[i];
-      }
-      return array;
-    }
-    
     function encryptedFileStream(file, pub_keys) {
       this.file = file;
       this.message_stream = new openpgp.stream.MessageStream(pub_keys, file.size,
@@ -77,16 +69,14 @@ angular.module('pgpFileUploadApp')
 
       this.message_stream.on('data', function(data) {
         if (neededBytes >= self.message_stream.buffer.length) {
-          var data = new Blob(nodeBufferToUint8Array(self.message_stream.buffer.slice(0, neededBytes)));
+          var data = new Blob([self.message_stream.buffer.slice(0, neededBytes).toArrayBuffer()]);
           // Investigate if this de-allocates the bytes automatically or not
-          console.log("Slicing shit");
           self.message_stream.buffer = self.message_stream.buffer.slice(neededBytes);
-          console.log(this.message_stream.buffer);
-          self.chunk.readFinished(data);
+          chunk.readFinished(data);
         }
       });
       this.message_stream.on('end', function(data) {
-          self.chunk.readFinished(new Blob(nodeBufferToUint8Array(self.message_stream.buffer)));
+          chunk.readFinished(new Blob(nodeBufferToUint8Array(self.message_stream.buffer)));
       });
       
       reader.onloadend = function(e) {
